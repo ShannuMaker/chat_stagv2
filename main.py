@@ -1,4 +1,5 @@
 import os
+from dotenv import load_dotenv
 import sys
 import uuid
 import base64
@@ -21,7 +22,12 @@ if sys.platform == 'win32':
 
 app = FastAPI()
 
-DB_URL = os.getenv("DATABASE_URL", "postgresql://neondb_owner:npg_WyXHEifS04bx@ep-broad-sunset-a553unbb-pooler.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require")
+load_dotenv() 
+
+# This will raise KeyError if DATABASE_URL is not set
+database_url = os.environ['DATABASE_URL']
+
+DB_URL = os.getenv("DATABASE_URL", database_url)
 db_pool = None
 ai_task_queue = asyncio.Queue()
 workers = []
